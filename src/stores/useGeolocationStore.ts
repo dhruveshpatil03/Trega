@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { encode } from 'geohash';
+import ngeohash from 'ngeohash';
 
 interface GeoState {
   coordinates: { lat: number; lng: number } | null;
@@ -22,7 +22,8 @@ export const useGeolocationStore = create<GeoState>((set) => ({
       (pos) => {
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
-        const gh = encode(lat, lng, 9);
+        // ngeohash uses .encode(lat, lng, precision)
+        const gh = ngeohash.encode(lat, lng, 9);
         set({ coordinates: { lat, lng }, geohash: gh, error: null });
         document.cookie = `geohash=${gh}; path=/; max-age=86400`;
       },
@@ -31,7 +32,8 @@ export const useGeolocationStore = create<GeoState>((set) => ({
     );
   },
   setManualLocation: (lat, lng) => {
-    const gh = encode(lat, lng, 9);
+    // ngeohash uses .encode(lat, lng, precision)
+    const gh = ngeohash.encode(lat, lng, 9);
     set({ coordinates: { lat, lng }, geohash: gh, error: null });
     document.cookie = `geohash=${gh}; path=/; max-age=86400`;
   },
