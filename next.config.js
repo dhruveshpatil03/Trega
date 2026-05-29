@@ -11,4 +11,3 @@ const nextConfig = {
   },
 };
 module.exports = nextConfig;
-git init
